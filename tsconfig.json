@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "ES6",
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true
   },
@@ -10,8 +10,6 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.d.ts",
+    "node_modules/@webgpu/types/**/*"
   ],
-  "exclude": [
-    "node_modules"
-  ]
 }

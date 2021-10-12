@@ -96,8 +96,7 @@ export default class Renderer {
 
     async loadTextureFile(imgSrc: any): Promise<GPUTexture> {
         const img = document.createElement('img');
-        img.crossOrigin = "Anonymous";
-        img.src = imgSrc + "?not-from-cache";
+        img.src = imgSrc;
         await img.decode();
         const imageBitmap = await createImageBitmap(img);
 
