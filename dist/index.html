@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>WebGPU Hello Triangle</title>
+  <style>
+    html,
+    body {
+      background: rgb(0, 0, 0);
+    }
+  </style>
+</head>
+
+<body>
+  <div style="position: relative;">
+    <div>
+      <canvas id="gfx"></canvas>
+      <script type="text/javascript" src="bundle.js"></script>
+    </div>
+
+    <br />
+    <label style="color: white">Controls: Up to accelerate, Left/Right arrows to turn, Space to fire.</label>
+    <br />
+
+    <br />
+    <label style="color: white">Render Options</label>
+    <br />
+
+    <select id="glow_enabled">
+      <option>true</option>
+      <option>false</option>
+    </select>
+    <label style="color: white" for=glow_enabled>Glow</label>
+    <br />
+
+    <input type="range" id="glow_radius" min="0.0" max="3.0" step="0.1" value="1.2">
+    <label style="color: white" for="glow_radius">Glow radus</label>
+    <br />
+
+    <input type="range" id="darken_rate" min="0.800" max="0.9999" step="0.0001" value="0.999">
+    <label style="color: white" for="darken_rate">Darken rate</label>
+    <br />
+
+    <br />
+    <label style="color: white">Game Options</label>
+    <br />
+
+    <select id="invincible">
+      <option>false</option>
+      <option>true</option>
+    </select>
+    <label style="color: white" for=glow_enabled>Invincible</label>
+    <br />
+  </div>
+</body>
+
+</html>
