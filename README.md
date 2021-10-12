@@ -19,6 +19,11 @@ For my part, this project was a great way to learn WebGPU, as well as [Typescrip
 2. Not knowing TypeScript, Node.js, nor WebGPU, I wanted to make the game as simple as possible so that I could focus on rendering.
 3. Having written a [Vectrex emulator](https://github.com/amaiorano/vectrexy) in the past that uses OpenGL to render lines with CRT-like fading and glow effects, I wanted to see how difficult it would be to reproduce these effects in WebGPU.
 
+Finally, I just want to give proper thanks to a couple of projects that helped tremendously:
+
+* Alain Galvan's blog post: [Raw WebGPU](https://alain.xyz/blog/raw-webgpu).
+* Austin Eng's [WebGPU Samples](https://github.com/austinEng/webgpu-samples).
+
 ## Build
 
 Install [Node.js](https://nodejs.org/en/). Then, 
