@@ -2,6 +2,13 @@
 
 Quaderoids is an Asteroids clone written in TypeScript that targets WebGPU.
 
+## Play
+
+http://amaiorano.io/quaderoids/
+
+You'll need a browser that supports WebGPU, such as [Chrome Canary](https://www.google.com/intl/en_ca/chrome/canary/). You'll need to enable `chrome://flags/#enable-unsafe-webgpu` to use it.
+
+
 ## About
 
 This project was written during a "hack-week" on the WebGPU team at Google with the goal of learning and testing the [WebGPU API](//webgpu.dev).
@@ -26,10 +33,6 @@ npm install
 For development, run `npm start` to start a local web server that watches and recompiles on the fly as source is changed. Navigate to http://localhost:4000 to play the game.
 
 For production, compile the project with `npm run build`. The files will be output to the `dist/` directory.
-
-## Play
-
-TODO: link to hosted version of the game here.
 
 ## Design
 
