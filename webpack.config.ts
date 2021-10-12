@@ -1,6 +1,6 @@
 import path from "path";
-import { Configuration } from "webpack";
-const config: Configuration = {
+
+module.exports = {
     entry: "./src/main.ts",
     module: {
         rules: [
@@ -12,6 +12,18 @@ const config: Configuration = {
                     options: {
                         presets: ["@babel/preset-env", "@babel/preset-typescript"],
                     },
+                },
+            },
+            {
+                test: /\.wgsl/,
+                type: 'asset/source'
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loader: 'file-loader',
+                options: {
+                    esModule: false,
+                    outputPath: 'static',
                 },
             },
         ],
@@ -28,5 +40,7 @@ const config: Configuration = {
         compress: true,
         port: 4000,
     },
+    optimization: {
+        minimize: false
+    }
 };
-export default config;
