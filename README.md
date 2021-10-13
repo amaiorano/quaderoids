@@ -6,7 +6,7 @@ Quaderoids is an Asteroids clone written in TypeScript that targets WebGPU.
 
 https://amaiorano.io/quaderoids/
 
-You'll need a browser that supports WebGPU, such as [Chrome Canary](https://www.google.com/intl/en_ca/chrome/canary/). You'll need to enable `chrome://flags/#enable-unsafe-webgpu` to use it.
+Note that this should work on the latest version of [Chrome](https://www.google.com/intl/en_us/chrome/) as I registered for a WebGPU [Origin Trial](https://developer.chrome.com/origintrials). Otherwise, you'll need a browser that supports WebGPU, such as [Chrome Canary](https://www.google.com/intl/en_ca/chrome/canary/), and enable experimental support by setting the `https://chrome://flags/#enable-unsafe-webgpu` flag.
 
 
 ## About
