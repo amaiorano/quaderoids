@@ -781,7 +781,7 @@ try {
 /***/ ((module) => {
 
 "use strict";
-module.exports = "[[binding(0), group(0)]] var mySampler: sampler;\n[[binding(1), group(0)]] var myTexture: texture_2d<f32>;\n\n[[stage(fragment)]]\nfn main([[location(0)]] fragUV: vec2<f32>) -> [[location(0)]] vec4<f32> {\n  return textureSample(myTexture, mySampler, fragUV);\n}\n";
+module.exports = "@binding(0) @group(0) var mySampler: sampler;\n@binding(1) @group(0) var myTexture: texture_2d<f32>;\n\n@fragment\nfn main(@location(0) fragUV: vec2<f32>) -> @location(0) vec4<f32> {\n  return textureSample(myTexture, mySampler, fragUV);\n}\n";
 
 /***/ }),
 
@@ -789,7 +789,7 @@ module.exports = "[[binding(0), group(0)]] var mySampler: sampler;\n[[binding(1)
 /***/ ((module) => {
 
 "use strict";
-module.exports = "struct VSOut {\n    [[builtin(position)]] Position: vec4<f32>;\n    [[location(0)]] uv: vec2<f32>;\n};\n\n[[stage(vertex)]]\nfn main([[location(0)]] inPos: vec3<f32>,\n        [[location(1)]] inUV: vec2<f32>) -> VSOut {\n    var vsOut: VSOut;\n    //vsOut.Position = uniforms.modelViewProjectionMatrix * vec4<f32>(inPos, 1.0);\n    vsOut.Position = vec4<f32>(inPos, 1.0);\n    vsOut.uv = inUV;\n    return vsOut;\n}";
+module.exports = "struct VSOut {\n    @builtin(position) Position: vec4<f32>,\n    @location(0) uv: vec2<f32>,\n};\n\n@vertex\nfn main(@location(0) inPos: vec3<f32>,\n        @location(1) inUV: vec2<f32>) -> VSOut {\n    var vsOut: VSOut;\n    //vsOut.Position = uniforms.modelViewProjectionMatrix * vec4<f32>(inPos, 1.0);\n    vsOut.Position = vec4<f32>(inPos, 1.0);\n    vsOut.uv = inUV;\n    return vsOut;\n}";
 
 /***/ }),
 
@@ -797,7 +797,7 @@ module.exports = "struct VSOut {\n    [[builtin(position)]] Position: vec4<f32>;
 /***/ ((module) => {
 
 "use strict";
-module.exports = "[[binding(0), group(0)]] var mySampler: sampler;\n[[binding(1), group(0)]] var myTexture: texture_2d<f32>;\n\n[[block]] struct Uniforms {\n  deltaTime : f32;\n  darkenRate : f32;\n};\n[[binding(2), group(0)]] var<uniform> uniforms : Uniforms;\n\n// Integate current to target using a damped approach. Rate of 0.99 means we'd reach\n// 99% of the way to target in 1 second.\nfn integrateDamped(current: vec3<f32>, target: vec3<f32>, rate: f32, deltaTime: f32) -> vec3<f32> {\n    let ratio = 1.0 - pow(1.0 - rate, deltaTime);\n    return mix(current, target, ratio);\n}\n\n[[stage(fragment)]]\nfn main([[location(0)]] fragUV: vec2<f32>) -> [[location(0)]] vec4<f32> {\n  let current4 : vec4<f32> = textureSample(myTexture, mySampler, fragUV);\n\n  var current = current4.rgb;\n  if (any(current > vec3<f32>(0.1))) {\n    let rate = uniforms.darkenRate; //0.999;\n    let target = vec3<f32>(0.0);\n    current = integrateDamped(current, target, rate, uniforms.deltaTime);    \n  } else {\n    current = vec3<f32>(0.0);\n  }\n\n  return vec4<f32>(current, current4.a);\n}\n";
+module.exports = "@binding(0) @group(0) var mySampler: sampler;\n@binding(1) @group(0) var myTexture: texture_2d<f32>;\n\nstruct Uniforms {\n  deltaTime : f32,\n  darkenRate : f32,\n};\n@binding(2) @group(0) var<uniform> uniforms : Uniforms;\n\n// Integate current to target_val using a damped approach. Rate of 0.99 means we'd reach\n// 99% of the way to target_val in 1 second.\nfn integrateDamped(current: vec3<f32>, target_val: vec3<f32>, rate: f32, deltaTime: f32) -> vec3<f32> {\n    let ratio = 1.0 - pow(1.0 - rate, deltaTime);\n    return mix(current, target_val, ratio);\n}\n\n@fragment\nfn main(@location(0) fragUV: vec2<f32>) -> @location(0) vec4<f32> {\n  let current4 : vec4<f32> = textureSample(myTexture, mySampler, fragUV);\n\n  var current = current4.rgb;\n  if (any(current > vec3<f32>(0.1))) {\n    let rate = uniforms.darkenRate; //0.999;\n    let target_val = vec3<f32>(0.0);\n    current = integrateDamped(current, target_val, rate, uniforms.deltaTime);    \n  } else {\n    current = vec3<f32>(0.0);\n  }\n\n  return vec4<f32>(current, current4.a);\n}\n";
 
 /***/ }),
 
@@ -805,7 +805,7 @@ module.exports = "[[binding(0), group(0)]] var mySampler: sampler;\n[[binding(1)
 /***/ ((module) => {
 
 "use strict";
-module.exports = "[[stage(fragment)]]\nfn main([[location(0)]] inColor: vec3<f32>) -> [[location(0)]] vec4<f32> {\n    return vec4<f32>(inColor, 1.0);\n}\n";
+module.exports = "@fragment\nfn main(@location(0) inColor: vec3<f32>) -> @location(0) vec4<f32> {\n    return vec4<f32>(inColor, 1.0);\n}\n";
 
 /***/ }),
 
@@ -813,7 +813,7 @@ module.exports = "[[stage(fragment)]]\nfn main([[location(0)]] inColor: vec3<f32
 /***/ ((module) => {
 
 "use strict";
-module.exports = "[[block]] struct Uniforms {\n  modelViewProjectionMatrix : mat4x4<f32>;\n};\n[[binding(0), group(0)]] var<uniform> uniforms : Uniforms;\n\nstruct VSOut {\n    [[builtin(position)]] Position: vec4<f32>;\n    [[location(0)]] color: vec3<f32>;\n};\n\n[[stage(vertex)]]\nfn main([[location(0)]] inPos: vec3<f32>,\n        [[location(1)]] inColor: vec3<f32>) -> VSOut {\n    var vsOut: VSOut;\n    vsOut.Position = uniforms.modelViewProjectionMatrix * vec4<f32>(inPos, 1.0);\n    //vsOut.Position = vec4<f32>(inPos, 1.0);\n    vsOut.color = inColor;\n    return vsOut;\n}";
+module.exports = "struct Uniforms {\n  modelViewProjectionMatrix : mat4x4<f32>,\n};\n@binding(0) @group(0) var<uniform> uniforms : Uniforms;\n\nstruct VSOut {\n    @builtin(position) Position: vec4<f32>,\n    @location(0) color: vec3<f32>,\n};\n\n@vertex\nfn main(@location(0) inPos: vec3<f32>,\n        @location(1) inColor: vec3<f32>) -> VSOut {\n    var vsOut: VSOut;\n    vsOut.Position = uniforms.modelViewProjectionMatrix * vec4<f32>(inPos, 1.0);\n    //vsOut.Position = vec4<f32>(inPos, 1.0);\n    vsOut.color = inColor;\n    return vsOut;\n}";
 
 /***/ }),
 
@@ -821,7 +821,7 @@ module.exports = "[[block]] struct Uniforms {\n  modelViewProjectionMatrix : mat
 /***/ ((module) => {
 
 "use strict";
-module.exports = "[[binding(0), group(0)]] var mySampler: sampler;\n[[binding(1), group(0)]] var myTexture: texture_2d<f32>;\n\n[[block]] struct Uniforms {\n  dir : vec2<f32>;\n  resolution: f32;\n  radius: f32;\n};\n[[binding(2), group(0)]] var<uniform> uniforms : Uniforms;\n\n[[stage(fragment)]]\nfn main([[location(0)]] fragUV: vec2<f32>) -> [[location(0)]] vec4<f32> {\n    // the amount to blur, i.e. how far off center to sample from \n    // 1.0 -> blur by one pixel\n    // 2.0 -> blur by two pixels, eUV.\n    let blur = uniforms.radius / uniforms.resolution; \n\n    // the direction of our blur\n    // (1.0, 0.0) -> x-axis blur\n    // (0.0, 1.0) -> y-axis blur\n    let hstep = uniforms.dir.x * blur;\n    let vstep = uniforms.dir.y * blur;\n\n    // Apply blurring, using a 9-tap filter with predefined gaussian weights\n    var sum = vec4<f32>(0.0);\n\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 4.0 * hstep, fragUV.y - 4.0 * vstep)) * 0.0162162162;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 3.0 * hstep, fragUV.y - 3.0 * vstep)) * 0.0540540541;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 2.0 * hstep, fragUV.y - 2.0 * vstep)) * 0.1216216216;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 1.0 * hstep, fragUV.y - 1.0 * vstep)) * 0.1945945946;\n    \n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x, fragUV.y)) * 0.2270270270;\n\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 1.0 * hstep, fragUV.y + 1.0 * vstep)) * 0.1945945946;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 2.0 * hstep, fragUV.y + 2.0 * vstep)) * 0.1216216216;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 3.0 * hstep, fragUV.y + 3.0 * vstep)) * 0.0540540541;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 4.0 * hstep, fragUV.y + 4.0 * vstep)) * 0.0162162162;\n\n    return vec4<f32>(sum.rgb, 1.0);\n}\n";
+module.exports = "@binding(0) @group(0) var mySampler: sampler;\n@binding(1) @group(0) var myTexture: texture_2d<f32>;\n\nstruct Uniforms {\n  dir : vec2<f32>,\n  resolution: f32,\n  radius: f32,\n};\n@binding(2) @group(0) var<uniform> uniforms : Uniforms;\n\n@fragment\nfn main(@location(0) fragUV: vec2<f32>) -> @location(0) vec4<f32> {\n    // the amount to blur, i.e. how far off center to sample from \n    // 1.0 -> blur by one pixel\n    // 2.0 -> blur by two pixels, eUV.\n    let blur = uniforms.radius / uniforms.resolution; \n\n    // the direction of our blur\n    // (1.0, 0.0) -> x-axis blur\n    // (0.0, 1.0) -> y-axis blur\n    let hstep = uniforms.dir.x * blur;\n    let vstep = uniforms.dir.y * blur;\n\n    // Apply blurring, using a 9-tap filter with predefined gaussian weights\n    var sum = vec4<f32>(0.0);\n\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 4.0 * hstep, fragUV.y - 4.0 * vstep)) * 0.0162162162;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 3.0 * hstep, fragUV.y - 3.0 * vstep)) * 0.0540540541;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 2.0 * hstep, fragUV.y - 2.0 * vstep)) * 0.1216216216;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x - 1.0 * hstep, fragUV.y - 1.0 * vstep)) * 0.1945945946;\n    \n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x, fragUV.y)) * 0.2270270270;\n\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 1.0 * hstep, fragUV.y + 1.0 * vstep)) * 0.1945945946;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 2.0 * hstep, fragUV.y + 2.0 * vstep)) * 0.1216216216;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 3.0 * hstep, fragUV.y + 3.0 * vstep)) * 0.0540540541;\n    sum = sum + textureSample(myTexture, mySampler, vec2<f32>(fragUV.x + 4.0 * hstep, fragUV.y + 4.0 * vstep)) * 0.0162162162;\n\n    return vec4<f32>(sum.rgb, 1.0);\n}\n";
 
 /***/ }),
 
@@ -829,7 +829,7 @@ module.exports = "[[binding(0), group(0)]] var mySampler: sampler;\n[[binding(1)
 /***/ ((module) => {
 
 "use strict";
-module.exports = "[[binding(0), group(0)]] var sampler0: sampler;\n[[binding(1), group(0)]] var texture0: texture_2d<f32>;\n[[binding(2), group(0)]] var sampler1: sampler;\n[[binding(3), group(0)]] var texture1: texture_2d<f32>;\n\n[[stage(fragment)]]\nfn main([[location(0)]] fragUV: vec2<f32>) -> [[location(0)]] vec4<f32> {\n  let c0 = textureSample(texture0, sampler0, fragUV);\n  let c1 = textureSample(texture1, sampler1, fragUV);\n  return max(c0, c1);\n}\n";
+module.exports = "@binding(0) @group(0) var sampler0: sampler;\n@binding(1) @group(0) var texture0: texture_2d<f32>;\n@binding(2) @group(0) var sampler1: sampler;\n@binding(3) @group(0) var texture1: texture_2d<f32>;\n\n@fragment\nfn main(@location(0) fragUV: vec2<f32>) -> @location(0) vec4<f32> {\n  let c0 = textureSample(texture0, sampler0, fragUV);\n  let c1 = textureSample(texture1, sampler1, fragUV);\n  return max(c0, c1);\n}\n";
 
 /***/ }),
 
@@ -837,7 +837,7 @@ module.exports = "[[binding(0), group(0)]] var sampler0: sampler;\n[[binding(1),
 /***/ ((module) => {
 
 "use strict";
-module.exports = "[[binding(0), group(0)]] var sampler0: sampler;\n[[binding(1), group(0)]] var texture0: texture_2d<f32>;\n[[binding(2), group(0)]] var sampler1: sampler;\n[[binding(3), group(0)]] var texture1: texture_2d<f32>;\n\n[[stage(fragment)]]\nfn main([[location(0)]] fragUV: vec2<f32>) -> [[location(0)]] vec4<f32> {\n  let c0 = textureSample(texture0, sampler0, fragUV);\n  let c1 = textureSample(texture1, sampler1, fragUV);\n  let overlayAlpha = 0.4; // TODO: uniform var\n  let result = vec4<f32>(mix(c0.rgb, c1.rgb, overlayAlpha), 1.0);\n  return result;\n}\n";
+module.exports = "@binding(0) @group(0) var sampler0: sampler;\n@binding(1) @group(0) var texture0: texture_2d<f32>;\n@binding(2) @group(0) var sampler1: sampler;\n@binding(3) @group(0) var texture1: texture_2d<f32>;\n\n@fragment\nfn main(@location(0) fragUV: vec2<f32>) -> @location(0) vec4<f32> {\n  let c0 = textureSample(texture0, sampler0, fragUV);\n  let c1 = textureSample(texture1, sampler1, fragUV);\n  let overlayAlpha = 0.4; // TODO: uniform var\n  let result = vec4<f32>(mix(c0.rgb, c1.rgb, overlayAlpha), 1.0);\n  return result;\n}\n";
 
 /***/ })
 
@@ -4009,13 +4009,13 @@ var DrawLinesPipeline = /*#__PURE__*/function (_Pipeline) {
 
       var positionAttribDesc = {
         shaderLocation: 0,
-        // [[location(0)]]
+        // @location(0)
         offset: 0,
         format: 'float32x3'
       };
       var colorAttribDesc = {
         shaderLocation: 1,
-        // [[location(1)]]
+        // @location(1)
         offset: 0,
         format: 'float32x3'
       };
@@ -4176,7 +4176,7 @@ var CopyTexturePipeline = /*#__PURE__*/function (_Pipeline) {
             attributes: [// GPUVertexAttribute
             {
               shaderLocation: 0,
-              // [[location(0)]]
+              // @location(0)
               offset: 0,
               format: 'float32x3'
             }]
@@ -4188,7 +4188,7 @@ var CopyTexturePipeline = /*#__PURE__*/function (_Pipeline) {
             {
               // uv
               shaderLocation: 1,
-              // [[location(1)]]
+              // @location(1)
               offset: 0,
               format: 'float32x2'
             }]
@@ -4347,7 +4347,7 @@ var DarkenTexturePipeline = /*#__PURE__*/function (_Pipeline) {
             attributes: [// GPUVertexAttribute
             {
               shaderLocation: 0,
-              // [[location(0)]]
+              // @location(0)
               offset: 0,
               format: 'float32x3'
             }]
@@ -4359,7 +4359,7 @@ var DarkenTexturePipeline = /*#__PURE__*/function (_Pipeline) {
             {
               // uv
               shaderLocation: 1,
-              // [[location(1)]]
+              // @location(1)
               offset: 0,
               format: 'float32x2'
             }]
@@ -4531,7 +4531,7 @@ var GlowTexturePipeline = /*#__PURE__*/function (_Pipeline) {
             attributes: [// GPUVertexAttribute
             {
               shaderLocation: 0,
-              // [[location(0)]]
+              // @location(0)
               offset: 0,
               format: 'float32x3'
             }]
@@ -4543,7 +4543,7 @@ var GlowTexturePipeline = /*#__PURE__*/function (_Pipeline) {
             {
               // uv
               shaderLocation: 1,
-              // [[location(1)]]
+              // @location(1)
               offset: 0,
               format: 'float32x2'
             }]
@@ -4721,7 +4721,7 @@ var CombineTexturesPipeline = /*#__PURE__*/function (_Pipeline) {
             attributes: [// GPUVertexAttribute
             {
               shaderLocation: 0,
-              // [[location(0)]]
+              // @location(0)
               offset: 0,
               format: 'float32x3'
             }]
@@ -4733,7 +4733,7 @@ var CombineTexturesPipeline = /*#__PURE__*/function (_Pipeline) {
             {
               // uv
               shaderLocation: 1,
-              // [[location(1)]]
+              // @location(1)
               offset: 0,
               format: 'float32x2'
             }]
