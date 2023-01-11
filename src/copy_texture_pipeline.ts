@@ -30,7 +30,7 @@ export class CopyTexturePipeline extends Pipeline {
                             attributes: [
                                 // GPUVertexAttribute
                                 {
-                                    shaderLocation: 0, // [[location(0)]]
+                                    shaderLocation: 0, // @location(0)
                                     offset: 0,
                                     format: 'float32x3',
                                 }
@@ -43,7 +43,7 @@ export class CopyTexturePipeline extends Pipeline {
                                 // GPUVertexAttribute
                                 {
                                     // uv
-                                    shaderLocation: 1, // [[location(1)]]
+                                    shaderLocation: 1, // @location(1)
                                     offset: 0,
                                     format: 'float32x2',
                                 },

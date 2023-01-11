@@ -1,15 +1,15 @@
-[[binding(0), group(0)]] var mySampler: sampler;
-[[binding(1), group(0)]] var myTexture: texture_2d<f32>;
+@binding(0) @group(0) var mySampler: sampler;
+@binding(1) @group(0) var myTexture: texture_2d<f32>;
 
-[[block]] struct Uniforms {
-  dir : vec2<f32>;
-  resolution: f32;
-  radius: f32;
+struct Uniforms {
+  dir : vec2<f32>,
+  resolution: f32,
+  radius: f32,
 };
-[[binding(2), group(0)]] var<uniform> uniforms : Uniforms;
+@binding(2) @group(0) var<uniform> uniforms : Uniforms;
 
-[[stage(fragment)]]
-fn main([[location(0)]] fragUV: vec2<f32>) -> [[location(0)]] vec4<f32> {
+@fragment
+fn main(@location(0) fragUV: vec2<f32>) -> @location(0) vec4<f32> {
     // the amount to blur, i.e. how far off center to sample from 
     // 1.0 -> blur by one pixel
     // 2.0 -> blur by two pixels, eUV.

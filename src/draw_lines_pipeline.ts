@@ -22,12 +22,12 @@ export class DrawLinesPipeline extends Pipeline {
 
         // 🔣 Input Assembly
         const positionAttribDesc: GPUVertexAttribute = {
-            shaderLocation: 0, // [[location(0)]]
+            shaderLocation: 0, // @location(0)
             offset: 0,
             format: 'float32x3'
         };
         const colorAttribDesc: GPUVertexAttribute = {
-            shaderLocation: 1, // [[location(1)]]
+            shaderLocation: 1, // @location(1)
             offset: 0,
             format: 'float32x3'
         };
