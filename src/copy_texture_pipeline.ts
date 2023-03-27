@@ -15,6 +15,8 @@ export class CopyTexturePipeline extends Pipeline {
         this.pipeline = this.device.createRenderPipeline(
             // GPURenderPipelineDescription
             {
+                layout: 'auto',
+
                 // GPUVertexState
                 vertex: {
                     module: this.device.createShaderModule({
@@ -153,7 +155,7 @@ export class CopyTexturePipeline extends Pipeline {
         passEncoder.setVertexBuffer(0, positionBuffer);
         passEncoder.setVertexBuffer(1, uvBuffer);
         passEncoder.draw(vertices.length / 3, 1, 0, 0);
-        passEncoder.endPass();
+        passEncoder.end();
 
         // this.queue.submit([commandEncoder.finish()]);
         return commandEncoder.finish();

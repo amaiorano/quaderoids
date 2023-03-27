@@ -15,6 +15,8 @@ export class CombineTexturesPipeline extends Pipeline {
         this.pipeline = this.device.createRenderPipeline(
             // GPURenderPipelineDescription
             {
+                layout: 'auto',
+
                 // GPUVertexState
                 vertex: {
                     module: this.device.createShaderModule({
@@ -109,7 +111,8 @@ export class CombineTexturesPipeline extends Pipeline {
         // Attachment is the canvas texture view
         let colorAttachment: GPURenderPassColorAttachment = {
             view: targetTextureView,
-            loadValue: { r: 0.1, g: 0.1, b: 0.1, a: 1 },
+            clearValue: { r: 0.1, g: 0.1, b: 0.1, a: 1 },
+            loadOp: 'clear',
             storeOp: 'store'
         };
 
@@ -169,7 +172,7 @@ export class CombineTexturesPipeline extends Pipeline {
         passEncoder.setVertexBuffer(0, positionBuffer);
         passEncoder.setVertexBuffer(1, uvBuffer);
         passEncoder.draw(vertices.length / 3, 1, 0, 0);
-        passEncoder.endPass();
+        passEncoder.end();
 
         return commandEncoder.finish();
     }

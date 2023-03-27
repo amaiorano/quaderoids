@@ -25,7 +25,7 @@
         "@babel/runtime": "^7.15.4",
         "@types/node": "^16.6.x",
         "@types/webpack-dev-server": "^4.3.1",
-        "@webgpu/types": "^0.1.6",
+        "@webgpu/types": "^0.1.30",
         "babel-loader": "^8.2.2",
         "path": "^0.12.7",
         "ts-node": "^10.3.0",

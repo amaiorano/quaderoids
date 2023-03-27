@@ -67,6 +67,7 @@ export class DrawLinesPipeline extends Pipeline {
         };
 
         const pipelineDesc: GPURenderPipelineDescriptor = {
+            layout: 'auto',
             vertex,
             fragment,
             primitive,
@@ -98,8 +99,8 @@ export class DrawLinesPipeline extends Pipeline {
 
         let colorAttachment: GPURenderPassColorAttachment = {
             view: targetTextureView,
-            // loadValue: { r: 0.1, g: 0.1, b: 0.1, a: 1 }, // Clear
-            loadValue: clear ? { r: 0.1, g: 0.1, b: 0.1, a: 1 } : 'load',
+            clearValue: { r: 0.1, g: 0.1, b: 0.1, a: 1 },
+            loadOp: clear ? 'clear' : 'load',
             storeOp: 'store',
         };
 
@@ -135,7 +136,7 @@ export class DrawLinesPipeline extends Pipeline {
         passEncoder.setVertexBuffer(1, colorBuffer);
         passEncoder.setIndexBuffer(indexBuffer, 'uint16');
         passEncoder.drawIndexed(mesh.indices.length, 1);
-        passEncoder.endPass();
+        passEncoder.end();
 
         return commandEncoder.finish();
     }
