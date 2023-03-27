@@ -4052,6 +4052,7 @@ var DrawLinesPipeline = /*#__PURE__*/function (_Pipeline) {
         topology: 'triangle-list'
       };
       var pipelineDesc = {
+        layout: 'auto',
         vertex: vertex,
         fragment: fragment,
         primitive: primitive
@@ -4080,13 +4081,13 @@ var DrawLinesPipeline = /*#__PURE__*/function (_Pipeline) {
       var clear = false;
       var colorAttachment = {
         view: targetTextureView,
-        // loadValue: { r: 0.1, g: 0.1, b: 0.1, a: 1 }, // Clear
-        loadValue: clear ? {
+        clearValue: {
           r: 0.1,
           g: 0.1,
           b: 0.1,
           a: 1
-        } : 'load',
+        },
+        loadOp: clear ? 'clear' : 'load',
         storeOp: 'store'
       };
       var renderPassDesc = {
@@ -4115,7 +4116,7 @@ var DrawLinesPipeline = /*#__PURE__*/function (_Pipeline) {
       passEncoder.setVertexBuffer(1, colorBuffer);
       passEncoder.setIndexBuffer(indexBuffer, 'uint16');
       passEncoder.drawIndexed(mesh.indices.length, 1);
-      passEncoder.endPass();
+      passEncoder.end();
       return commandEncoder.finish();
     }
   }]);
@@ -4162,6 +4163,7 @@ var CopyTexturePipeline = /*#__PURE__*/function (_Pipeline) {
     value: function init() {
       this.pipeline = this.device.createRenderPipeline( // GPURenderPipelineDescription
       {
+        layout: 'auto',
         // GPUVertexState
         vertex: {
           module: this.device.createShaderModule({
@@ -4287,7 +4289,7 @@ var CopyTexturePipeline = /*#__PURE__*/function (_Pipeline) {
       passEncoder.setVertexBuffer(0, positionBuffer);
       passEncoder.setVertexBuffer(1, uvBuffer);
       passEncoder.draw(vertices.length / 3, 1, 0, 0);
-      passEncoder.endPass(); // this.queue.submit([commandEncoder.finish()]);
+      passEncoder.end(); // this.queue.submit([commandEncoder.finish()]);
 
       return commandEncoder.finish();
     }
@@ -4333,6 +4335,7 @@ var DarkenTexturePipeline = /*#__PURE__*/function (_Pipeline) {
     value: function init() {
       this.pipeline = this.device.createRenderPipeline( // GPURenderPipelineDescription
       {
+        layout: 'auto',
         // GPUVertexState
         vertex: {
           module: this.device.createShaderModule({
@@ -4418,12 +4421,13 @@ var DarkenTexturePipeline = /*#__PURE__*/function (_Pipeline) {
       // Attachment is the canvas texture view
       var colorAttachment = {
         view: targetTextureView,
-        loadValue: {
+        clearValue: {
           r: 0.1,
           g: 0.1,
           b: 0.1,
           a: 1
         },
+        loadOp: 'clear',
         storeOp: 'store'
       };
       var renderPassDesc = {
@@ -4472,7 +4476,7 @@ var DarkenTexturePipeline = /*#__PURE__*/function (_Pipeline) {
       passEncoder.setVertexBuffer(0, positionBuffer);
       passEncoder.setVertexBuffer(1, uvBuffer);
       passEncoder.draw(vertices.length / 3, 1, 0, 0);
-      passEncoder.endPass();
+      passEncoder.end();
       return commandEncoder.finish();
     }
   }]);
@@ -4517,6 +4521,7 @@ var GlowTexturePipeline = /*#__PURE__*/function (_Pipeline) {
     value: function init() {
       this.pipeline = this.device.createRenderPipeline( // GPURenderPipelineDescription
       {
+        layout: 'auto',
         // GPUVertexState
         vertex: {
           module: this.device.createShaderModule({
@@ -4608,12 +4613,13 @@ var GlowTexturePipeline = /*#__PURE__*/function (_Pipeline) {
       // Attachment is the canvas texture view
       var colorAttachment = {
         view: targetTextureView,
-        loadValue: {
+        clearValue: {
           r: 0.1,
           g: 0.1,
           b: 0.1,
           a: 1
         },
+        loadOp: 'clear',
         storeOp: 'store'
       };
       var renderPassDesc = {
@@ -4665,7 +4671,7 @@ var GlowTexturePipeline = /*#__PURE__*/function (_Pipeline) {
       passEncoder.setVertexBuffer(0, positionBuffer);
       passEncoder.setVertexBuffer(1, uvBuffer);
       passEncoder.draw(vertices.length / 3, 1, 0, 0);
-      passEncoder.endPass();
+      passEncoder.end();
       return commandEncoder.finish();
     }
   }]);
@@ -4707,6 +4713,7 @@ var CombineTexturesPipeline = /*#__PURE__*/function (_Pipeline) {
     value: function init(fragShaderCode) {
       this.pipeline = this.device.createRenderPipeline( // GPURenderPipelineDescription
       {
+        layout: 'auto',
         // GPUVertexState
         vertex: {
           module: this.device.createShaderModule({
@@ -4790,12 +4797,13 @@ var CombineTexturesPipeline = /*#__PURE__*/function (_Pipeline) {
       // Attachment is the canvas texture view
       var colorAttachment = {
         view: targetTextureView,
-        loadValue: {
+        clearValue: {
           r: 0.1,
           g: 0.1,
           b: 0.1,
           a: 1
         },
+        loadOp: 'clear',
         storeOp: 'store'
       };
       var renderPassDesc = {
@@ -4845,7 +4853,7 @@ var CombineTexturesPipeline = /*#__PURE__*/function (_Pipeline) {
       passEncoder.setVertexBuffer(0, positionBuffer);
       passEncoder.setVertexBuffer(1, uvBuffer);
       passEncoder.draw(vertices.length / 3, 1, 0, 0);
-      passEncoder.endPass();
+      passEncoder.end();
       return commandEncoder.finish();
     }
   }]);
